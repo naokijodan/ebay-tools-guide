@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eBay出品ツール関係 総合目次</title>
+
+<style>
+  :root {
+    --accent:       #e8853a;
+    --accent-hover: #f0974a;
+    --accent-dim:   #b5622a;
+
+    --bg:        #fdf8f0;
+    --bg-card:   #ffffff;
+    --bg-card2:  #faf5ec;
+    --bg-hero:   #f5ede0;
+
+    --text:      #3a322c;
+    --text-sub:  #6b5744;
+    --text-mute: #b09c8a;
+
+    --border:    #ecdcc8;
+    --border-dashed: #d9c5ab;
+    --shadow:    0 8px 28px rgba(60, 30, 0, 0.06);
+    --shadow-hover: 0 14px 34px rgba(232, 133, 58, 0.16);
+
+    --bubble-bg: #ffffff;
+    --btn-fg:    #ffffff;
+
+    --mascot-body-1: #f0974a;
+    --mascot-body-2: #e8853a;
+    --mascot-face:   #fff6ea;
+
+    --badge-beg-bg:  #e2f5e6;
+    --badge-beg-fg:  #2f7d46;
+    --badge-mid-bg:  #fdead2;
+    --badge-mid-fg:  #b5622a;
+    --badge-adv-bg:  #fbe0d6;
+    --badge-adv-fg:  #a8451f;
+    --badge-ref-bg:  #ececec;
+    --badge-ref-fg:  #7a7a7a;
+  }
+
+  [data-theme="dark"] {
+    --accent:       #c9a84c;
+    --accent-hover: #e0c068;
+    --accent-dim:   #a8862f;
+
+    --bg:        #0a0a0a;
+    --bg-card:   #1a1a1a;
+    --bg-card2:  #1f1f1f;
+    --bg-hero:   #131110;
+
+    --text:      #e8e4de;
+    --text-sub:  #a89b8c;
+    --text-mute: #6a6a6a;
+
+    --border:    #34302a;
+    --border-dashed: #3d372e;
+    --shadow:    0 8px 28px rgba(0, 0, 0, 0.45);
+    --shadow-hover: 0 14px 34px rgba(201, 168, 76, 0.18);
+
+    --bubble-bg: #1f1c14;
+    --btn-fg:    #0a0a0a;
+
+    --mascot-body-1: #e0c068;
+    --mascot-body-2: #c9a84c;
+    --mascot-face:   #201a0c;
+
+    --badge-beg-bg:  rgba(88, 189, 122, 0.16);
+    --badge-beg-fg:  #7ed99a;
+    --badge-mid-bg:  rgba(224, 151, 74, 0.18);
+    --badge-mid-fg:  #e0974a;
+    --badge-adv-bg:  rgba(224, 106, 90, 0.18);
+    --badge-adv-fg:  #e5896f;
+    --badge-ref-bg:  rgba(255, 255, 255, 0.07);
+    --badge-ref-fg:  #9a9a9a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', Meiryo, sans-serif;
+    font-size: 16px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 4.5rem;
+  }
+
+  /* ============ topbar ============ */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .brand { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+
+  .theme-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+    border-radius: 999px;
+    padding: 0.32rem 0.95rem;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  h1 {
+    font-size: clamp(1.35rem, 4vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  /* ============ ヒーロー：キャラ＋吹き出し＋検索 ============ */
+  .hero {
+    background: var(--bg-hero);
+    border-radius: 32px;
+    padding: 2.75rem 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .hero-label {
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .mascot-zone {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    flex: 1 1 420px;
+    min-width: 280px;
+  }
+
+  .mascot-svg-wrap {
+    flex-shrink: 0;
+    animation: mascot-float 3.6s ease-in-out infinite;
+  }
+
+  @keyframes mascot-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mascot-svg-wrap { animation: none; }
+  }
+
+  .mascot-eye {
+    transform-origin: center;
+    animation: mascot-blink 4.8s ease-in-out infinite;
+  }
+  .mascot-eye.eye-r { animation-delay: 0.05s; }
+
+  @keyframes mascot-blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    93%, 96%      { transform: scaleY(0.12); }
+  }
+
+  .speech-bubble {
+    position: relative;
+    background: var(--bubble-bg);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 1.15rem 1.4rem;
+    box-shadow: var(--shadow);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    max-width: 420px;
+    line-height: 1.7;
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    bottom: 22px;
+    width: 18px;
+    height: 18px;
+    background: var(--bubble-bg);
+    border-left: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transform: rotate(45deg);
+    border-radius: 0 0 0 4px;
+  }
+
+  @media (max-width: 640px) {
+    .speech-bubble::before { display: none; }
+  }
+
+  .search-zone {
+    flex: 1 1 320px;
+    min-width: 240px;
+  }
+
+  .search-box {
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.95rem 1.3rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-box:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232, 133, 58, 0.14);
+  }
+  .search-box::placeholder { color: var(--text-mute); }
+
+  .search-hint {
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--text-mute);
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 2rem 1.4rem; border-radius: 24px; }
+    .hero-row { flex-direction: column; align-items: center; }
+    .mascot-zone { flex-direction: column; align-items: center; text-align: center; }
+    .search-zone { width: 100%; }
+  }
+
+  /* ============ タブ ============ */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-bottom: 2.25rem;
+  }
+
+  .tab-btn {
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-sub);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.65rem 1.35rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    box-shadow: var(--shadow);
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--btn-fg);
+  }
+
+  .tab-btn.featured { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.featured.active { color: var(--btn-fg); }
+
+  .tab-badge {
+    font-size: 0.62rem;
+    background: var(--accent);
+    color: var(--btn-fg);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    font-weight: 700;
+  }
+  .tab-btn.featured.active .tab-badge { background: var(--btn-fg); color: var(--accent); }
+
+  /* ============ カードグリッド ============ */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card { display: none; }
+  .card.show { display: block; }
+
+  .card a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.4rem;
+    height: 100%;
+    color: inherit;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .card a:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+  }
+
+  .card-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+  .card-body { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+  .card-title { font-size: 0.95rem; font-weight: 600; line-height: 1.65; color: var(--text); }
+  .card-sub { font-size: 0.7rem; color: var(--text-mute); }
+
+  .badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 999px;
+    padding: 0.14rem 0.6rem;
+  }
+  .badge-beg { background: var(--badge-beg-bg); color: var(--badge-beg-fg); }
+  .badge-mid { background: var(--badge-mid-bg); color: var(--badge-mid-fg); }
+  .badge-adv { background: var(--badge-adv-bg); color: var(--badge-adv-fg); }
+  .badge-ref { background: var(--badge-ref-bg); color: var(--badge-ref-fg); }
+
+  .card.featured a {
+    border: 1.5px solid var(--accent);
+    background: linear-gradient(160deg, var(--bg-card) 60%, var(--bg-card2) 100%);
+    box-shadow: 0 10px 32px rgba(232, 133, 58, 0.2);
+  }
+  .card.featured .card-title { font-weight: 800; }
+  .featured-tag {
+    display: inline-block;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    background: var(--accent);
+    color: var(--btn-fg);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+
+  .no-hit {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-mute);
+    font-size: 0.95rem;
+  }
+  .no-hit.show { display: block; }
+
+  /* ============ 参考資料セクション（控えめな独立枠） ============ */
+  .ref-section {
+    margin-top: 3rem;
+    padding-top: 1.75rem;
+    border-top: 1px dashed var(--border-dashed);
+  }
+  .ref-heading {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-mute);
+    margin-bottom: 1.1rem;
+  }
+  .ref-grid .card a {
+    background: var(--bg-card2);
+    border: 1px dashed var(--border-dashed);
+    box-shadow: none;
+  }
+  .ref-grid .card a:hover {
+    box-shadow: var(--shadow);
+    border-style: solid;
+    transform: translateY(-2px);
+  }
+  .ref-grid .card-title { font-size: 0.88rem; font-weight: 500; color: var(--text-sub); }
+
+  @media (max-width: 640px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .tab-btn { font-size: 0.8rem; padding: 0.55rem 1.05rem; }
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-mute);
+    text-align: center;
+  }
+</style>
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('ebay-tools-guide-theme');
+      if (t === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="brand">eBay出品ツール関係 総合目次</span>
+    <button class="theme-btn" id="themeToggle" aria-label="ライト／ダーク切替">☀️ ライト</button>
+  </div>
+
+  <h1>eBay出品ツール関係 総合目次</h1>
+
+  <section class="hero">
+    <p class="hero-label">案内役といっしょに探そう</p>
+    <div class="hero-row">
+
+      <div class="mascot-zone">
+        <div class="mascot-svg-wrap" aria-hidden="true">
+          <svg width="108" height="120" viewBox="0 0 108 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--mascot-body-1)"/>
+                <stop offset="100%" stop-color="var(--mascot-body-2)"/>
+              </linearGradient>
+            </defs>
+            <!-- アンテナ -->
+            <line x1="54" y1="8" x2="54" y2="20" stroke="var(--mascot-body-2)" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="54" cy="7" r="6" fill="var(--mascot-body-1)"/>
+            <!-- 耳/サイドパーツ -->
+            <circle cx="14" cy="62" r="9" fill="var(--mascot-body-2)"/>
+            <circle cx="94" cy="62" r="9" fill="var(--mascot-body-2)"/>
+            <!-- 体（丸みのある頭部＋体一体型） -->
+            <rect x="12" y="20" width="84" height="86" rx="34" fill="url(#bodyGrad)"/>
+            <!-- 顔パネル -->
+            <rect x="26" y="42" width="56" height="40" rx="20" fill="var(--mascot-face)"/>
+            <!-- 目 -->
+            <g class="mascot-eye eye-l">
+              <circle cx="42" cy="61" r="5.5" fill="var(--mascot-body-2)"/>
+            </g>
+            <g class="mascot-eye eye-r">
+              <circle cx="66" cy="61" r="5.5" fill="var(--mascot-body-2)"/>
+            </g>
+            <!-- ほほ -->
+            <circle cx="33" cy="70" r="4" fill="var(--mascot-body-1)" opacity="0.55"/>
+            <circle cx="75" cy="70" r="4" fill="var(--mascot-body-1)" opacity="0.55"/>
+            <!-- 口 -->
+            <path d="M46 72 Q54 79 62 72" stroke="var(--mascot-body-2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- 足 -->
+            <rect x="30" y="104" width="14" height="10" rx="5" fill="var(--mascot-body-2)"/>
+            <rect x="64" y="104" width="14" height="10" rx="5" fill="var(--mascot-body-2)"/>
+          </svg>
+        </div>
+
+        <div class="speech-bubble" id="speechBubble" role="status" aria-live="polite">
+          ようこそ！ 上の検索に言葉を入れるか、下のタブから選んでね。
+        </div>
+      </div>
+
+      <div class="search-zone">
+        <input type="text" class="search-box" id="searchBox" placeholder="何をお探し？（例：送料、価格、Obsidian）" aria-label="記事を検索">
+        <p class="search-hint">入力すると、32本の記事からリアルタイムで絞り込みます。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="カテゴリタブ">
+    <button type="button" class="tab-btn" data-tab="1" role="tab">🧰 出品を回す道具</button>
+    <button type="button" class="tab-btn" data-tab="2" role="tab">📋 eBayのルールと実務</button>
+    <button type="button" class="tab-btn" data-tab="3" role="tab">💰 価格・利益・手数料</button>
+    <button type="button" class="tab-btn" data-tab="4" role="tab">🤖 AIを使い始める（入門）</button>
+    <button type="button" class="tab-btn" data-tab="5" role="tab">🚀 AIをもっと使いこなす</button>
+    <button type="button" class="tab-btn" data-tab="6" role="tab">🗒️ 情報を整理する道具</button>
+    <button type="button" class="tab-btn featured" data-tab="7" role="tab">💛 AIとの向き合い方 <span class="tab-badge">★</span></button>
+  </div>
+
+  <div class="card-grid" id="cardGrid">
+
+    <!-- ① 出品を回す道具（一括シート＆拡張機能）7本 -->
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/bulk-tools-guide/" target="_blank" rel="noopener"><span class="card-icon">🧰</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">一括シート V3 総合ガイド</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/bulk-tools-guide/extensions.html" target="_blank" rel="noopener"><span class="card-icon">🧩</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">拡張機能まとめ</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/v3-to-v5-intro/" target="_blank" rel="noopener"><span class="card-icon">🗓️</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">一括登録シート V4 / V5 説明会</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/v4-guide/" target="_blank" rel="noopener"><span class="card-icon">📘</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">一括登録シート ガイドブック — V4 対応</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/v5-guide/" target="_blank" rel="noopener"><span class="card-icon">🔁</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">とりこみ君 + V5 — 翻訳の重心が、前段に移った</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/v5-guidebook/" target="_blank" rel="noopener"><span class="card-icon">📗</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">一括登録シート V5 — eBay出品の「3つの翻訳パターン」</span></span></a></div>
+    <div class="card" data-cat="1"><a href="https://naokijodan.github.io/prompt-editor-guide/" target="_blank" rel="noopener"><span class="card-icon">✏️</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">プロンプト編集機能 - 超初心者向けガイド</span></span></a></div>
+
+    <!-- ② eBayのルールと実務 5本 -->
+    <div class="card" data-cat="2"><a href="https://naokijodan.github.io/shipping-policy-400-500-guide/" target="_blank" rel="noopener"><span class="card-icon">📦</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">新シッピングポリシー $400〜$500 メリット解説</span></span></a></div>
+    <div class="card" data-cat="2"><a href="https://naokijodan.github.io/cpass-invoice-guide/" target="_blank" rel="noopener"><span class="card-icon">🧾</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">CPaSS 請求書・関税データのダウンロード方法</span></span></a></div>
+    <div class="card" data-cat="2"><a href="https://naokijodan.github.io/ebay-cpsc-age-guide/" target="_blank" rel="noopener"><span class="card-icon">🔞</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">出品に「年齢（Age Level）」を追加する方法【eBay編】</span></span></a></div>
+    <div class="card" data-cat="2"><a href="https://naokijodan.github.io/cpsc-proposal/" target="_blank" rel="noopener"><span class="card-icon">🧸</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">7月以降の新品玩具・アパレル販売 — CPSC新規制の考察</span></span></a></div>
+    <div class="card" data-cat="2"><a href="https://naokijodan.github.io/vero-brand-guide/" target="_blank" rel="noopener"><span class="card-icon">⚠️</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">eBay VeRO ブランドリスク一覧</span></span></a></div>
+
+    <!-- ③ 価格・利益・手数料 3本 -->
+    <div class="card" data-cat="3"><a href="https://naokijodan.github.io/price-calc-guide/" target="_blank" rel="noopener"><span class="card-icon">📖</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">価格計算ツール 使い方ガイド</span></span></a></div>
+    <div class="card" data-cat="3"><a href="https://naokijodan.github.io/ec-price-calculator/" target="_blank" rel="noopener"><span class="card-icon">🧮</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">EC価格計算ツール</span></span></a></div>
+    <div class="card" data-cat="3"><a href="https://naokijodan.github.io/ebay-fee-analysis/" target="_blank" rel="noopener"><span class="card-icon">💰</span><span class="card-body"><span class="badge badge-adv">上級</span><span class="card-title">eBay手数料計算 問題分析と解決策</span></span></a></div>
+
+    <!-- ④ AIを使い始める（入門）4本 -->
+    <div class="card" data-cat="4"><a href="https://naokijodan.github.io/ai-vocabulary-textbook/" target="_blank" rel="noopener"><span class="card-icon">📚</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">AIを使うための基礎用語270語 - 教科書</span></span></a></div>
+    <div class="card" data-cat="4"><a href="https://naokijodan.github.io/ai-cli-installer/" target="_blank" rel="noopener"><span class="card-icon">⬇️</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">AI CLI 統合インストーラー | Claude Code / Codex / Gemini を簡単インストール</span></span></a></div>
+    <div class="card" data-cat="4"><a href="https://naokijodan.github.io/codex-app-guide/" target="_blank" rel="noopener"><span class="card-icon">📱</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">Codexアプリ 導入方法</span></span></a></div>
+    <div class="card" data-cat="4"><a href="https://naokijodan.github.io/claude-code-beginners-guide/" target="_blank" rel="noopener"><span class="card-icon">💻</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">AI CLIツール 完全入門ガイド｜Claude Code・Codex CLI・Gemini CLI</span></span></a></div>
+
+    <!-- ⑤ AIをもっと使いこなす（応用・上級）5本 -->
+    <div class="card" data-cat="5"><a href="https://naokijodan.github.io/everything-claude-code-guide/" target="_blank" rel="noopener"><span class="card-icon">🗂️</span><span class="card-body"><span class="badge badge-adv">上級</span><span class="card-title">Everything Claude Code - 完全ガイド</span></span></a></div>
+    <div class="card" data-cat="5"><a href="https://naokijodan.github.io/ai-mcp-bridge-guide/" target="_blank" rel="noopener"><span class="card-icon">🔗</span><span class="card-body"><span class="badge badge-adv">上級</span><span class="card-title">Claude Code × GPT × Gemini 連携ガイド - AI間コラボレーションの実現</span></span></a></div>
+    <div class="card" data-cat="5"><a href="https://naokijodan.github.io/codex-csv-analysis-guide/" target="_blank" rel="noopener"><span class="card-icon">📊</span><span class="card-body"><span class="badge badge-adv">上級</span><span class="card-title">Codex CLI で CSV から市場分析ダッシュボードを作成する完全ガイド</span></span></a></div>
+    <div class="card" data-cat="5"><a href="https://naokijodan.github.io/ai-infrastructure/" target="_blank" rel="noopener"><span class="card-icon">🏗️</span><span class="card-body"><span class="badge badge-adv">上級</span><span class="card-title">AI活用 5階層インフラ構築ガイド</span></span></a></div>
+    <div class="card" data-cat="5"><a href="https://naokijodan.github.io/home-server-guide/" target="_blank" rel="noopener"><span class="card-icon">🏠</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">自宅サーバーの外出先・海外からの使い方</span></span></a></div>
+
+    <!-- ⑥ 情報を整理する道具（Obsidian）2本 -->
+    <div class="card" data-cat="6"><a href="https://naokijodan.github.io/obsidian-guide/" target="_blank" rel="noopener"><span class="card-icon">🧒</span><span class="card-body"><span class="badge badge-beg">初級</span><span class="card-title">Obsidianってなに？ - 小中学生でもわかるガイド</span></span></a></div>
+    <div class="card" data-cat="6"><a href="https://naokijodan.github.io/obsidian-complete-guide/" target="_blank" rel="noopener"><span class="card-icon">🗒️</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">Obsidian 完全ガイド - ナレッジ管理の新しいスタンダード</span></span></a></div>
+
+    <!-- ⑦ AIとの向き合い方（考え方）★目玉 2本 -->
+    <div class="card featured" data-cat="7">
+      <a href="https://naokijodan.github.io/ai-mindset-guide/" target="_blank" rel="noopener">
+        <span class="card-icon">💛</span>
+        <span class="card-body">
+          <span class="featured-tag">★ 目玉記事</span>
+          <span class="badge badge-beg">初級</span>
+          <span class="card-title">答えが出ないのは、AIのせいじゃない | AIを&quot;相棒&quot;にする人の考え方</span>
+        </span>
+      </a>
+    </div>
+    <div class="card" data-cat="7"><a href="https://naokijodan.github.io/ai-rules-design-guide/" target="_blank" rel="noopener"><span class="card-icon">📐</span><span class="card-body"><span class="badge badge-mid">中級</span><span class="card-title">AIは、渡した枠のなかで賢くなる。 | 自分用のAI開発ルールの作り方ガイド</span></span></a></div>
+
+  </div>
+
+  <p class="no-hit" id="noHit">見つかりませんでした。別の言葉で試してみてください。</p>
+
+  <section class="ref-section">
+    <p class="ref-heading">📎 参考資料・更新情報（教材本編とは別に、随時更新される資料です）</p>
+    <div class="card-grid ref-grid" id="refGrid">
+      <div class="card ref-card" data-cat="ref"><a href="https://naokijodan.github.io/cpsc-hts-list-ja/" target="_blank" rel="noopener"><span class="card-icon">📋</span><span class="card-body"><span class="badge badge-ref">参考</span><span class="card-title">適合証明書の電子申告（eFiling）に関する CPSC ガイダンスおよび HTS リスト</span></span></a></div>
+      <div class="card ref-card" data-cat="ref"><a href="https://naokijodan.github.io/bulk-sheet-report/" target="_blank" rel="noopener"><span class="card-icon">📄</span><span class="card-body"><span class="badge badge-ref">参考</span><span class="card-title">一括シートApps 改修報告書（2025年11月）</span><span class="card-sub">2025-11-27 / Ver.34.2</span></span></a></div>
+      <div class="card ref-card" data-cat="ref"><a href="https://naokijodan.github.io/bulk-sheet-report-v2/" target="_blank" rel="noopener"><span class="card-icon">📄</span><span class="card-body"><span class="badge badge-ref">参考</span><span class="card-title">一括シートApps v2 改修報告書（2025年11月）</span><span class="card-sub">2025-11-19 / Ver.35</span></span></a></div>
+      <div class="card ref-card" data-cat="ref"><a href="https://naokijodan.github.io/ebay-proposal/" target="_blank" rel="noopener"><span class="card-icon">📝</span><span class="card-body"><span class="badge badge-ref">参考</span><span class="card-title">eBay 個別出品 ツール運用提案</span></span></a></div>
+    </div>
+  </section>
+
+  <footer>
+    困ったときは、該当する記事のURLをそのままAIに渡してみてください。
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var KEY = 'ebay-tools-guide-theme';
+    var root = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
+
+    function getTheme() {
+      try { return localStorage.getItem(KEY) || 'light'; } catch (e) { return 'light'; }
+    }
+    function applyTheme(t) {
+      if (t === 'dark') { root.setAttribute('data-theme', 'dark'); }
+      else { root.removeAttribute('data-theme'); }
+      try { localStorage.setItem(KEY, t); } catch (e) {}
+      btn.textContent = t === 'dark' ? '☀️ ライト' : '🌙 ダーク';
+    }
+    applyTheme(getTheme());
+    btn.addEventListener('click', function () {
+      applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var HINTS = {
+      '1': '出品をラクにする道具はここ！ 一括シートや拡張機能だよ。',
+      '2': 'eBayのルールや実務で迷ったらここ。送料・関税・年齢表示など。',
+      '3': 'いくらで売る？ 手数料は？ お金の計算はここ。',
+      '4': 'AI初めてでも大丈夫。まずはここから！',
+      '5': '慣れてきたら応用編。ちょっと難しめだよ。',
+      '6': 'メモやノートを整理したいなら Obsidian。',
+      '7': '最後に読んでほしい、AIとの向き合い方だよ。'
+    };
+    var WELCOME = 'ようこそ！ 上の検索に言葉を入れるか、下のタブから選んでね。';
+
+    var tabs      = document.querySelectorAll('.tab-btn');
+    var allCards  = document.querySelectorAll('.card');
+    var bubble    = document.getElementById('speechBubble');
+    var searchBox = document.getElementById('searchBox');
+    var noHit     = document.getElementById('noHit');
+
+    var currentCat = '1';
+
+    function setBubble(text) {
+      bubble.textContent = text;
+    }
+
+    function cardText(card) {
+      var title = card.querySelector('.card-title').textContent;
+      var badge = card.querySelector('.badge');
+      return (title + ' ' + (badge ? badge.textContent : '')).toLowerCase();
+    }
+
+    function render() {
+      var query = searchBox.value.trim();
+      var shown = 0;
+
+      if (query !== '') {
+        var q = query.toLowerCase();
+        allCards.forEach(function (card) {
+          var match = cardText(card).indexOf(q) !== -1;
+          card.classList.toggle('show', match);
+          if (match) shown++;
+        });
+        if (shown === 0) {
+          setBubble('うーん、見つからなかった。別の言葉で試してみて。');
+        } else {
+          setBubble(shown + '件 見つけたよ！');
+        }
+        noHit.classList.toggle('show', shown === 0);
+      } else {
+        allCards.forEach(function (card) {
+          var isRef = card.classList.contains('ref-card');
+          var match = isRef ? true : (card.getAttribute('data-cat') === currentCat);
+          card.classList.toggle('show', match);
+          if (match) shown++;
+        });
+        noHit.classList.remove('show');
+      }
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        currentCat = tab.getAttribute('data-tab');
+        tabs.forEach(function (t) {
+          t.classList.toggle('active', t === tab);
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        searchBox.value = '';
+        setBubble(HINTS[currentCat] || WELCOME);
+        render();
+      });
+    });
+
+    searchBox.addEventListener('input', render);
+
+    /* 初期表示：ようこそメッセージ＋カテゴリ1を表示 */
+    tabs[0].classList.add('active');
+    tabs[0].setAttribute('aria-selected', 'true');
+    setBubble(WELCOME);
+    render();
+  })();
+</script>
+
+</body>
+</html>
