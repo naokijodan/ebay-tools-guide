@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eBay翻訳 — 除去禁止事項リファレンス</title>
+<style>
+  :root {
+    --bg: #F7F5F1;
+    --surface: #FFFFFF;
+    --surface-alt: #F0EDE8;
+    --border: #D5CFCA;
+    --text: #1C1C1A;
+    --text-sub: #6B6660;
+    --accent: #B94035;
+    --accent-bg: #F9EAE8;
+    --accent-border: #E8BDB9;
+    --warn: #8C6020;
+    --warn-bg: #FDF4E4;
+    --warn-border: #E0C880;
+    --chip-bg: #EAE6E0;
+    --chip-text: #2C2A27;
+    --shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #1C1C1A; --surface: #252523; --surface-alt: #2E2D2A;
+    --border: #3A3A36; --text: #EDEBE5; --text-sub: #9A9590;
+    --accent: #E0554A; --accent-bg: #2E1E1C; --accent-border: #6B302A;
+    --warn: #C89040; --warn-bg: #261E10; --warn-border: #5A4020;
+    --chip-bg: #35332E; --chip-text: #D8D4CC;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-left { flex: 1; min-width: 0; }
+  .header-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .header-sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+  .theme-btn {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-sub);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px 10px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .theme-btn:hover { color: var(--text); }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    margin: 16px 0 8px;
+    padding-left: 4px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-alt);
+  }
+  .card-bar {
+    width: 3px;
+    height: 20px;
+    border-radius: 2px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .card-bar.warn { background: var(--warn); }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .card-note {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .card-body { padding: 14px 16px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .chip.red {
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  .chip.warn {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border: 1px solid var(--warn-border);
+  }
+  .chip.en { font-size: 11.5px; }
+
+  .note-box {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--accent);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .note-box.warn {
+    background: var(--warn-bg);
+    border-color: var(--warn-border);
+    color: var(--warn);
+  }
+  .note-icon { flex-shrink: 0; font-style: normal; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 580px) {
+    .two-col { grid-template-columns: 1fr; }
+    .header { padding: 16px; }
+    .main { padding: 16px 14px 48px; }
+  }
+
+  .card-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 10px 0;
+  }
+  .chip-group-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-eyebrow">翻訳チートシート</div>
+    <div class="header-title">元データにあっても除去する項目</div>
+    <div class="header-sub">ソースに記載があっても、eBay出品の Title・Description に含めない内容</div>
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" aria-label="テーマ切替">◑</button>
+</div>
+
+<div class="main">
+
+  <div class="note-box">
+    <span class="note-icon">⛔</span>
+    <span>以下の内容は、日本語ソース（メルカリ等）に明記されていても <strong>絶対に英語出力に含めない</strong>。eBay購入者には無関係な日本国内取引の文言です。</span>
+  </div>
+
+  <div class="section-label">Description / Title 共通 — 除去対象</div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar"></span>
+      <span class="card-title">配送方法・配送サービス名</span>
+      <span class="card-note">Shipping method</span>
+    </div>
+    <div class="card-body">
+      <div class="chips">
+        <span class="chip red">メルカリ便</span>
+        <span class="chip red">ゆうゆうメルカリ便</span>
+        <span class="chip red">らくらくメルカリ便</span>
+        <span class="chip red">匿名配送</span>
+        <span class="chip red">ヤマト</span>
+        <span class="chip red">佐川</span>
+        <span class="chip red">ゆうパック</span>
+        <span class="chip red">定形外</span>
+        <span class="chip red">レターパック</span>
+        <span class="chip red">補償付き</span>
+        <span class="chip red">追跡あり</span>
+        <span class="chip red">速達</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar"></span>
+      <span class="card-title">梱包方法・梱包の説明</span>
+      <span class="card-note">Packaging description</span>
+    </div>
+    <div class="card-body">
+      <div class="chips">
+        <span class="chip red">水濡れ防止</span>
+        <span class="chip red">折れ防止</span>
+        <span class="chip red">プチプチ</span>
+        <span class="chip red">ダンボール</span>
+        <span class="chip red">緩衝材</span>
+        <span class="chip red">丁寧に梱包</span>
+        <span class="chip red">厳重梱包</span>
+        <span class="chip red">エアキャップ</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar"></span>
+      <span class="card-title">保証・取引ルール・返品条件</span>
+      <span class="card-note">Transaction terms / warranty</span>
+    </div>
+    <div class="card-body">
+      <div class="chip-group-label">日本語ソース由来</div>
+      <div class="chips">
+        <span class="chip red">ノークレーム</span>
+        <span class="chip red">ノーリターン</span>
+        <span class="chip red">即購入OK</span>
+        <span class="chip red">即購入歓迎</span>
+        <span class="chip red">コメント不要</span>
+        <span class="chip red">お値引き不可</span>
+        <span class="chip red">専用</span>
+        <span class="chip red">お取り置き不可</span>
+        <span class="chip red">ノーキャンセル</span>
+      </div>
+      <hr class="card-divider">
+      <div class="chip-group-label">英語でも含めない（eBay側で別管理）</div>
+      <div class="chips">
+        <span class="chip red en">No returns</span>
+        <span class="chip red en">No refunds</span>
+        <span class="chip red en">Returns accepted</span>
+        <span class="chip red en">warranty</span>
+        <span class="chip red en">purchase history</span>
+        <span class="chip red en">seller info</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-bar"></span>
+        <span class="card-title">保管環境</span>
+        <span class="card-note">Storage environment</span>
+      </div>
+      <div class="card-body">
+        <div class="chips">
+          <span class="chip red">ペット飼育なし</span>
+          <span class="chip red">喫煙者なし</span>
+          <span class="chip red">自宅保管</span>
+          <span class="chip red">神経質な方ご遠慮</span>
+          <span class="chip red">タバコ臭なし</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-bar"></span>
+        <span class="card-title">値下げ・キャンペーン</span>
+        <span class="card-note">Discount / promotion</span>
+      </div>
+      <div class="card-body">
+        <div class="chips">
+          <span class="chip red">値下げ中</span>
+          <span class="chip red">最終価格</span>
+          <span class="chip red">週末値下げ</span>
+          <span class="chip red">フォロー割</span>
+          <span class="chip red">まとめ割</span>
+          <span class="chip red">お買い得</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar warn"></span>
+      <span class="card-title">出品者の主観評価 — ソース根拠なしに追加禁止</span>
+      <span class="card-note">Seller's subjective claims</span>
+    </div>
+    <div class="card-body">
+      <div class="chip-group-label">日本語（ソースにあっても英訳しない）</div>
+      <div class="chips">
+        <span class="chip warn">美品</span>
+        <span class="chip warn">極美品</span>
+        <span class="chip warn">超美品</span>
+        <span class="chip warn">激安</span>
+        <span class="chip warn">希少</span>
+        <span class="chip warn">レア</span>
+        <span class="chip warn">お買い得</span>
+        <span class="chip warn">お宝</span>
+      </div>
+      <hr class="card-divider">
+      <div class="chip-group-label">英語ではソース確認必須（確認できなければ使用禁止）</div>
+      <div class="chips">
+        <span class="chip warn en">RARE</span>
+        <span class="chip warn en">LIMITED / LIMITED EDITION</span>
+        <span class="chip warn en">VINTAGE</span>
+        <span class="chip warn en">EXCLUSIVE</span>
+        <span class="chip warn en">MINT</span>
+        <span class="chip warn en">ANTIQUE</span>
+        <span class="chip warn en">HANDMADE</span>
+        <span class="chip warn en">COLLECTIBLE / COLLECTOR'S EDITION</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Title / Description 共通 — 英語として使用禁止語</div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar"></span>
+      <span class="card-title">誇張語・VeRO抵触語 — 絶対使用禁止</span>
+      <span class="card-note">NO PADDING / VeRO</span>
+    </div>
+    <div class="card-body">
+      <div class="chip-group-label">誇張語（ソース内に何と書かれていても禁止）</div>
+      <div class="chips">
+        <span class="chip red en">AMAZING</span>
+        <span class="chip red en">FANTASTIC</span>
+        <span class="chip red en">INCREDIBLE</span>
+        <span class="chip red en">ULTIMATE</span>
+        <span class="chip red en">PREMIUM</span>
+        <span class="chip red en">MUST HAVE</span>
+        <span class="chip red en">BEST</span>
+        <span class="chip red en">PERFECT</span>
+      </div>
+      <hr class="card-divider">
+      <div class="chip-group-label">VeRO抵触語（絶対禁止）</div>
+      <div class="chips">
+        <span class="chip red en">AUTHENTIC</span>
+      </div>
+      <hr class="card-divider">
+      <div class="chip-group-label">条件付き可（製品固有名詞の一部としてのみ）</div>
+      <div class="chips">
+        <span class="chip warn en">OFFICIAL</span>
+        <span class="chip warn en">GENUINE</span>
+        <span class="chip warn en">ORIGINAL</span>
+      </div>
+      <div style="font-size:11px; color: var(--text-sub); margin-top:8px;">
+        ※ OFFICIAL は "Official Warranty Card" のように製品名の一部なら可。単独の真正性主張（"Official [Brand]" 等）は禁止。<br>
+        ※ GENUINE / ORIGINAL はソーステキストの逐語転記のみ（例: "Genuine Leather", "Original Box"）。
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box warn">
+    <span class="note-icon">⚠️</span>
+    <div>
+      <strong>中古品に "New" / "Brand New" を使わない</strong><br>
+      ソースが「新品」「未開封」「未使用」と書いていても <code style="background:var(--warn-bg);padding:1px 5px;border-radius:3px;font-size:11px;">Pre-owned, sealed and unopened</code> / <code style="background:var(--warn-bg);padding:1px 5px;border-radius:3px;font-size:11px;">Pre-owned, unused</code> で表現。<br>
+      バンド・バッテリー等の交換済みパーツも <code style="background:var(--warn-bg);padding:1px 5px;border-radius:3px;font-size:11px;">New Band</code> → <code style="background:var(--warn-bg);padding:1px 5px;border-radius:3px;font-size:11px;">Replacement Band</code> / <code style="background:var(--warn-bg);padding:1px 5px;border-radius:3px;font-size:11px;">Battery Replaced</code> と表現。
+    </div>
+  </div>
+
+  <div class="section-label">Title 禁止記号</div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-bar"></span>
+      <span class="card-title">タイトルに使えない記号</span>
+      <span class="card-note">Forbidden symbols in Title</span>
+    </div>
+    <div class="card-body">
+      <div class="chip-group-label">禁止（80字制限内・英数字と下記許可記号のみ）</div>
+      <div class="chips">
+        <span class="chip red en">*</span>
+        <span class="chip red en">$</span>
+        <span class="chip red en">~</span>
+        <span class="chip red en">^</span>
+        <span class="chip red en">@</span>
+        <span class="chip red en">!</span>
+        <span class="chip red en">?</span>
+        <span class="chip red en">™</span>
+        <span class="chip red en">( )</span>
+        <span class="chip red en">[ ]</span>
+        <span class="chip red en">{ }</span>
+        <span class="chip red en">"</span>
+        <span class="chip red en">_</span>
+        <span class="chip red en">%</span>
+        <span class="chip red en">=</span>
+        <span class="chip red en">|</span>
+        <span class="chip red en">\</span>
+        <span class="chip red en">&lt; &gt;</span>
+        <span class="chip red en">;</span>
+      </div>
+      <hr class="card-divider">
+      <div class="chip-group-label">許可記号（基本）</div>
+      <div class="chips">
+        <span class="chip en">&amp;</span>
+        <span class="chip en">/</span>
+        <span class="chip en">:</span>
+        <span class="chip en">-</span>
+        <span class="chip en">.</span>
+        <span class="chip en">,</span>
+      </div>
+      <div style="font-size:11px; color: var(--text-sub); margin-top:6px;">※ TCG・グレード等の文脈では # ' + も可</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    var root = document.documentElement;
+    var current = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  }
+</script>
+</body>
+</html>
